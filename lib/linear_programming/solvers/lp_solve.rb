@@ -15,7 +15,7 @@ class LinearProgramming
       raise Infeasible if solution =~ /contradicts/
       raise Unbounded if solution =~ /unbounded/
       
-      solution.scan(/[\d+\.]+$/).map(&:to_r)
+      solution.scan(/[\d+\.e-]+$/).map(&:to_r)
     end
   end
   
