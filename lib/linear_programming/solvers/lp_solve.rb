@@ -12,7 +12,7 @@ class LinearProgramming
     @solution ||= begin
       solution = `echo "#{to_s}" | lp_solve -presolve 2>&1`
       
-      raise Infeasible if solution =~ /contradicts/
+      raise Infeasible if solution =~ /contradicts|infeasible/
       raise Unbounded if solution =~ /unbounded/
       
       solution.scan(/[\d+\.e-]+$/).map(&:to_r)
