@@ -3,6 +3,7 @@ Gem::Specification.new do |specification|
   specification.version  = '0.0.1'
   specification.summary  = 'Linear programming in Ruby'
   specification.homepage = 'https://github.com/sytse/linear_programming'
+  specification.author   = 'Sytse'
   
   specification.files = `git ls-files`.split("\n")
 end
