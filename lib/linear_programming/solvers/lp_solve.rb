@@ -1,49 +1,33 @@
-class LinearProgramming
-  def optimal_value
-    solution.first
-  end
-  
-  def optimal_solution(variable)
-    solution[@objective.variables.index(variable).next]
-  end
-  
-  private  
-  def solution
-    @solution ||= begin
-      solution = `echo "#{to_s}" | lp_solve -presolve 2>&1`
-      
-      raise Infeasible if solution =~ /contradicts|infeasible/
-      raise Unbounded if solution =~ /unbounded/
-      
-      solution.scan(/[\d+\.e-]+$/).map(&:to_r)
+require_relative 'lp_solve/function'
+require_relative 'lp_solve/maximization'
+require_relative 'lp_solve/minimization'
+require_relative 'lp_solve/constraint'
+
+module LinearProgramming
+  class Problem
+    def optimal_value
+      solution.first
     end
-  end
-  
-  def to_s
-    [@objective.to_s, *@constraints.map(&:to_s)].join
-  end
-  
-  class Function
-    def to_s
-      map { |variable, factor| "#{factor.to_f} x#{@problem.objective.variables.index(variable)}" }.join('+')
+
+    def optimal_solution(variable)
+      solution[@objective.variables.index(variable).next]
     end
-  end
-  
-  class Maximization
-    def to_s
-      "max: #{super};"
+
+    private
+
+    def solution
+      @solution ||= begin
+        solution = `echo "#{self}" | lp_solve -presolve 2>&1`
+
+        raise Infeasible if /contradicts|infeasible/.match?(solution)
+        raise Unbounded if /unbounded/.match?(solution)
+
+        solution.scan(/[\d+.e-]+$/).map(&:to_r)
+      end
     end
-  end
-  
-  class Minimization
+
     def to_s
-      "min: #{super};"      
-    end
-  end
-  
-  class Constraint
-    def to_s
-      "#{super} #{@operator} #{@value.to_f};"
+      [@objective.to_s, *@constraints.map(&:to_s)].join
     end
   end
 end
