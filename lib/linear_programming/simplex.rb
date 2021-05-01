@@ -1,6 +1,6 @@
 module LinearProgramming
   module Simplex
-    MaximumIterations = 1000
+    MAXIMUM_ITERATIONS = 1000
 
     # Phase 1
     module GeneralLinearProgrammingProblem
@@ -68,7 +68,7 @@ module LinearProgramming
     def pivot
       @iteration ||= 0
       @iteration += 1
-      raise Problem::Infeasible if @iteration > MaximumIterations
+      raise Problem::Infeasible if @iteration > MAXIMUM_ITERATIONS
 
       @pivot_column_index = pivot_column_index
       @pivot_row_index = pivot_row_index
