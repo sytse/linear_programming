@@ -23,7 +23,7 @@ module LinearProgramming
           @starred_row_indices.include?(row)
         end
 
-        pivot_row_index ||= lowest_test_ratio_row_indices.first
+        pivot_row_index || lowest_test_ratio_row_indices.first
       end
     end
 
